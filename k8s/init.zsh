@@ -16,8 +16,7 @@ function k8s-info {
     return 1
   fi
   
-  if ! is-true "$(command kubectl config current-context 2> /dev/null)"; then
-    k8s_info[prompt]="no context"
+  if [[ "" = "$(command kubectl config current-context 2> /dev/null)" ]]; then
     return 1
   fi
 
