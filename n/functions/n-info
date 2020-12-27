@@ -1,0 +1,42 @@
+
+function n-info {
+  local context
+  local context_format
+  local context_formatted
+
+  local enabled
+  local -A info_formats
+  local info_format
+  
+  local REPLY
+  unset n_info 
+  typeset -gA n_info
+  zstyle -s ':prezto:module:n:info' enable 'enabled'
+  if ! is-true $enabled; then
+    return 1
+  fi
+  
+  zstyle -s ':prezto:module:n:info:version' format 'version_format'
+  if [[ -n "$version_format" ]]; then
+    version=$(node --version 2> /dev/null);
+    if [[ -n "$version" ]]; then
+      zformat -f version_formatted "$version_format" "c:$version"
+    fi
+  fi
+
+  # Format info.
+  zstyle -a ':prezto:module:n:info:keys' format 'info_formats'
+  for info_format in ${(k)info_formats}; do
+    zformat -f REPLY "$info_formats[$info_format]" \
+      "c:$version_formatted" 
+      n_info[$info_format]="$REPLY"
+  done
+
+  n_info["prompt"]="HelLO $REPLY"
+
+  unset REPLY
+
+}
+
+n-info "%@"
+
