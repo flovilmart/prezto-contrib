@@ -15,7 +15,8 @@ if ! zstyle -t ':prezto:module:k8s:alias' skip 'yes'; then
 	alias kcdc='k config delete-context'
 	alias kccc='k config current-context'
 	alias kcgc='k config get-contexts'
-	
+  alias kcsn='k config set-context --current --namespace'
+
 	# Pod management.
 	alias kgp='k get pods'
 	alias kep='k edit pods'

@@ -24,6 +24,10 @@ function k8s-info {
   zstyle -s ':prezto:module:k8s:info:context' format 'context_format'
   if [[ -n "$context_format" ]]; then
     context=$(command kubectl config current-context 2> /dev/null);
+    namespace=$(command kubectl config view --minify --output 'jsonpath={..namespace}' 2>/dev/null)
+    # Set namespace to 'default' if it is not defined
+    namespace=${namespace:-default}
+    context="${context}:${namespace}" 
     if [[ -n "$context" ]]; then
       zformat -f context_formatted "$context_format" "c:$context"
     fi
